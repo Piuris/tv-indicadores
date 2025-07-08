@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="dashboard-container">
+        <div class="dashboard-row">
+            <div class="carrossel-secao" id="carrossel-outbound">
+                <h3>OUTBOUND - GERAL</h3>
+                <div class="carrossel-item-display">
+                </div>
+            </div>
+            <div class="carrossel-secao" id="carrossel-paas">
+                <h3>PAAS - GERAL</h3>
+                <div class="carrossel-item-display">
+                </div>
+            </div>
+        </div>
+        <div class="dashboard-row">
+            <div class="carrossel-secao" id="carrossel-inbound25k">
+                <h3>INBOUND - 25K+</h3>
+                <div class="carrossel-item-display">
+                </div>
+            </div>
+            <div class="carrossel-secao" id="carrossel-inboundsdr">
+                <h3>INBOUND - SDR CLOSER</h3>
+                <div class="carrossel-item-display">
+                </div>
+            </div>
+        </div>
+        <div class="dashboard-row ranking-row">
+            <div id="ranking-secao">
+                <h3>RANKING MÊS META</h3>
+                <div id="ranking-conteudo">
+                    <div class="ranking-grupo">
+                        <h4>TOP 5 BDR & SDR</h4>
+                        <ul id="ranking-bdr-sdr"></ul>
+                    </div>
+                    <div class="ranking-grupo">
+                        <h4>TOP 3 CLOSER</h4>
+                        <ul id="ranking-closer"></ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="alerta-popup" class="hidden">
+        <div class="fogos-animacao"></div>
+        <div class="alerta-conteudo">
+            <img src="" alt="Meta Batida!" class="alerta-imagem">
+        </div>
+    </div>
+
+    <div id="alerta-pessoa-popup" class="hidden">
+        <div class="fogos-animacao"></div>
+        <div class="alerta-conteudo">
+            <h2 class="alerta-titulo-pessoa">META BATIDA!</h2>
+            <img src="" alt="Foto colaborador" class="alerta-pessoa-imagem">
+            <p class="alerta-pessoa-nome"></p>
+        </div>
+    </div>
+
+    <div id="main-content-wrapper">
+        <p id="last-update"></p> 
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
