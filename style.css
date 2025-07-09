@@ -3,6 +3,17 @@ html, body{
     margin: 0;
     padding: 0;
     overflow-x: hidden;
+    overflow-y: auto;
+}
+
+::-webkit-scrollbar{
+    width: 0px;
+    height: 0px;
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb{
+    background: transparent;
 }
 
 body{
@@ -22,10 +33,11 @@ body{
     align-items: center;
     width: 100%;
     max-width: 1400px;
-    gap: 30px;
-    margin: 20px auto;
-    padding: 20px;
+    gap: 10px;
+    margin: 5px auto;
+    padding: 5px;
     box-sizing: border-box;
+    flex-grow: 1;
 }
 
 .dashboard-row{
@@ -34,7 +46,7 @@ body{
     justify-content: space-around;
     align-items: stretch;
     width: 100%;
-    gap: 20px;
+    gap: 10px;
 }
 
 .ranking-row{
@@ -43,28 +55,29 @@ body{
 
 .carrossel-secao{
     background-color: #281E49;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0, 0.4);
-    flex-basis: calc(50% - 30px);
-    max-width: calc(50% - 30px);
-    min-width: 380px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+    flex-basis: calc(50% - 15px);
+    max-width: calc(50% - 15px);
+    min-width: 320px;
     box-sizing: border-box;
     border-radius: 10px;
-    padding: 20px;
+    padding: 15px;
     text-align: center;
+    flex-grow: 1;
 }
 
 .carrossel-secao h3{
     margin-top: 0;
     color: #9B6AFA;
-    font-size: 2em;
+    font-size: 1.6em;
     text-align: center;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     text-transform: uppercase;
 }
 
 .carrossel-item-display{
     width: 100%;
-    min-height: 180px;
+    min-height: 120px;
     display:flex;
     flex-direction: column;
     justify-content: center;
@@ -114,9 +127,9 @@ body{
 }
 
 .metric-block{
-    margin-bottom: 15px;
+    margin-bottom: 8px;
     width: 100%;
-    padding: 10px 0;
+    padding: 5px 0;
     border-bottom: 1px solid #45337C;
 }
 
@@ -125,14 +138,14 @@ body{
 }
 
 .metric-block h4{
-    margin-bottom: 8px;
-    font-size: 1.6em;
+    margin-bottom: 5px;
+    font-size: 1.4em;
     color: #C4A6FD;
 }
 
 .metric-block p{
-    margin: 4px 0;
-    font-size: 1.3em;
+    margin: 2px 0;
+    font-size: 1.1em;
     color: #E6E0FC;
 }
 
@@ -143,20 +156,23 @@ body{
 #ranking-secao{
     background-color: #281E49;
     border-radius: 15px;
-    padding: 30px;
+    padding: 10px;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0, 0.4);
     width: 100%;
     max-width: 1200px;
-    margin-top: 40px;
+    margin-top: 20px;
     box-sizing: border-box;
     text-align: center;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
 }
 
 #ranking-secao h3{
     margin-top: 0;
     color: #9B6AFA;
-    font-size: 2.2em;
-    margin-bottom: 25px;
+    font-size: 1.8em;
+    margin-bottom: 15px;
     text-transform: uppercase;
 }
 
@@ -164,15 +180,16 @@ body{
     display:flex;
     flex-direction: row;
     justify-content: space-around;
-    gap: 30px;
+    gap: 20px;
     flex-wrap: wrap;
     align-items: flex-start;
+    flex-grow: 1;
 }
 
 #ranking-conteudo h4{
     color: #AF87FC;
-    font-size: 1.8em;
-    margin-bottom: 15px;
+    font-size: 1.6em;
+    margin-bottom: 10px;
 }
 
 #ranking-conteudo ul{
@@ -180,15 +197,16 @@ body{
     padding: 0;
     margin: 0;
     flex: 1;
-    min-width: 280px;
+    min-width: 250px;
+    flex-grow: 1;
 }
 
 #ranking-conteudo li{
     background-color: #45337C;
-    margin-bottom: 10px;
-    padding: 12px 20px;
+    margin-bottom: 8px;
+    padding: 8px 15px;
     border-radius: 8px;
-    font-size: 1.3em;
+    font-size: 1.1em;
     color: #F7F3FF;
     display: flex;
     justify-content: space-between;
