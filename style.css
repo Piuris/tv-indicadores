@@ -345,6 +345,77 @@ body{
     visibility: hidden !important;
 }
 
+#alerta-reuniao-rolando{
+    position: fixed;
+    bottom: 20px;
+    left: -200px;
+    z-index: 1005;
+
+    width:600px;
+
+    background-color: #9b6afa;
+    border: 3px solid #281E49;
+    border-radius: 50px;
+    padding: 10px 20px;
+
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    color: white;
+    font-weight: bold;
+    font-size: 1.2em;
+    white-space: nowrap;
+    overflow: hidden;
+
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease-out, visibility 0.3s ease-out;
+}
+
+#alerta-reuniao-rolando.active{
+    opacity: 1;
+    visibility: visible;
+    animation: rollAcrossScreen 6s ease-in-out forwards;
+}
+
+#alerta-reuniao-rolando.hidden{
+    display: none;
+}
+
+#reuniao-pessoa-foto{
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #FFD700;
+}
+
+#reuniao-mensagem{
+    margin: 0;
+}
+
+@keyframes rollAcrossScreen{
+    0%{
+        transform: translateX(0);
+        opacity: 0;
+    }
+    10%{
+        opacity: 1;
+        transform: translateX(calc(0vw + 20px));
+    }
+    90%{
+        opacity: 1;
+        transform: translateX(calc(100vw - 20px - var(--alert-width, 200px)));
+    }
+    100%{
+        opacity: 0;
+        transform: translateX(calc(100vw + 200px));
+    }
+}
+
 @keyframes rocketFly{
     0%{
         transform: translate(-100vw, 150vh) rotate(-30deg);

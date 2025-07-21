@@ -5,9 +5,11 @@ const CSV_URLS = {
     ranking: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRAqYU8srfDo7tCR0eLbUQjBRU4_5Vyiq35A83BYB5QjekupWfoNT28mLB3H0EzAA8919U3YjM_k0oM/pub?gid=1518366484&single=true&output=csv',
     paas: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRAqYU8srfDo7tCR0eLbUQjBRU4_5Vyiq35A83BYB5QjekupWfoNT28mLB3H0EzAA8919U3YjM_k0oM/pub?gid=976727502&single=true&output=csv'
 }
-const CARROSSEL_DISPLAY_TIME = 8000;
+const CARROSSEL_DISPLAY_TIME = 20000;
 const ALERTA_DISPLAY_TIME = 5000;
 const UPDATE_INTERVAL_MS = 300000;
+
+let reunioesAgendadasAnterior = {};
 
 let outboundData = [];
 let inbound25kData = [];
@@ -15,8 +17,10 @@ let inboundsdrData = [];
 let paasData = [];
 let rankingData = [];
 let rocketAnimationQueue = [];
+let animationQueue = [];
 
 let isRocketAnimating = false;
+let isAnimating = false;
 
 let outboundIndex = 0;
 let inbound25kIndex = 0;
@@ -43,6 +47,9 @@ const alertaPessoaTituloEl = alertaPessoaPopupEl.querySelector('.alerta-titulo-p
 const rocketAlertElement = document.getElementById('alerta-foguete');
 const rocketImgElement = document.getElementById('foguete-imagem');
 const personImgElement = document.getElementById('pessoa-imagem');
+const reuniaoRollingAlertElement = document.getElementById('alerta-reuniao-rolando');
+const reuniaoPersonPhotoElement = document.getElementById('reuniao-pessoa-foto');
+const reuniaoMessageElement = document.getElementById('reuniao-mensagem');
 
 const CATEGORIA_PARA_IMAGEM_MAP = {
     'OUTBOUND - GERAL': 'outbound_geral',
@@ -53,6 +60,85 @@ const CATEGORIA_PARA_IMAGEM_MAP = {
 
 const displayedMetaAlerts = new Set();
 const displayedPersonMetaAlerts = new Set();
+
+function handleAnimationEnd(){
+    isAnimating = false;
+    animationQueue.shift();
+    processNextAnimationInQueue();
+}
+
+function showReuniaoRollingAlert(nomePessoa, fotoPessoaUrl){
+    if(!reuniaoRollingAlertElement || !reuniaoPersonPhotoElement || !reuniaoMessageElement){
+        console.error("Elementos do alerta reunião rolando não encontrados.");
+        handleAnimationEnd();
+        return;
+    }
+
+    console.log(`[ALERTA REUNIÃO ROLANDO] Disparando alerta para: ${nomePessoa}`);
+    reuniaoPersonPhotoElement.src = fotoPessoaUrl;
+    reuniaoMessageElement.textContent = `${nomePessoa} agendou reunião!`;
+
+    reuniaoRollingAlertElement.style.setProperty('--alert-width', `${reuniaoRollingAlertElement.offsetWidth}px`);
+
+    reuniaoRollingAlertElement.classList.remove('hidden');
+    reuniaoRollingAlertElement.classList.add('active');
+
+    reuniaoRollingAlertElement.addEventListener('animationend', () => {
+        reuniaoRollingAlertElement.classList.remove('active');
+        reuniaoRollingAlertElement.classList.add('hidden');
+        handleAnimationEnd();
+    }, {once : true});
+
+    setTimeout(() => {
+        if(reuniaoRollingAlertElement.classList.contains('active')){
+            console.warn("[ALERTA REUNIÃO ROLANDO] Fallback de timeout acionado.");
+            reuniaoRollingAlertElement.classList.remove('active');
+            reuniaoRollingAlertElement.classList.add('hidden');
+            handleAnimationEnd();
+        }
+    }, 6500);
+}
+
+function processNextAnimationInQueue(){
+    if(animationQueue.length > 0 && !isAnimating){
+        isAnimating = true;
+        const nextAnimationFunction = animationQueue[0];
+        nextAnimationFunction();
+    }
+}
+
+function updateRankingAndCheckReunioes(novosDadosRanking){
+    console.log("[updateRankingAndCheckReunioes] Novos Dados Ranking Recebidos:", novosDadosRanking);
+    novosDadosRanking.forEach(pessoa => {
+        const nome = pessoa.Pessoa;
+        const reunioesAtuais = parseInt(pessoa['Reuniao Agendada'] || 0);
+        
+        const fotoUrl = `imagens/pessoas/${formatarNomePessoaParaImagem(nome)}`;
+
+        console.log(`[DEBUG REUNIAO] Pessoa: ${nome}, Reuniões Anteriores: ${reunioesAgendadasAnterior[nome]}, Reuniões Atuais: ${reunioesAtuais}, URL da Foto (gerada): ${fotoUrl}`);
+
+        if(reunioesAgendadasAnterior[nome] !== undefined && reunioesAtuais > reunioesAgendadasAnterior[nome]){
+            const reunioesIncremento = reunioesAtuais - reunioesAgendadasAnterior[nome];
+            console.log(`[ALERTA REUNIÃO - DISPARADO] ${nome} agendou mais ${reunioesIncremento} reunião(ões)! Total: ${reunioesAtuais}`);
+            animationQueue.push(() => showReuniaoRollingAlert(nome, fotoUrl));
+
+            if(!isAnimating){
+                processNextAnimationInQueue();
+            }
+        }
+
+        reunioesAgendadasAnterior[nome] = reunioesAtuais; 
+
+        const listItem = document.querySelector(`li[data-nome="${nome}"]`);
+        if(listItem){
+            listItem.dataset.reunioes = reunioesAtuais;
+            const reunioesSpan = listItem.querySelector('.reunioes-agendadas');
+            if(reunioesSpan){
+                reunioesSpan.textContent = `Reuniões: ${reunioesAtuais}`;
+            }
+        }
+    });
+}
 
 function formatarNomePessoaParaImagem(nomePessoa) {
     if (!nomePessoa) return 'pessoa_generica.png';
@@ -86,7 +172,6 @@ function launchRocketAlert(personName){
     const personImageFileName = formatarNomePessoaParaImagem(personName);
     const personPhotoUrl = `imagens/pessoas/${personImageFileName}`;
     
-    // Pre-carrega a imagem para evitar flickers e garantir que o onerror seja chamado se a imagem não existir
     const img = new Image();
     img.onload = () => {
         console.log(`[launchRocketAlert] Imagem de pessoa carregada com sucesso: ${personPhotoUrl}`);
@@ -103,7 +188,7 @@ function launchRocketAlert(personName){
             processRocketQueue();
         }
     };
-    img.src = personPhotoUrl; // Inicia o carregamento da imagem
+    img.src = personPhotoUrl;
 }
 
 function processRocketQueue() {
@@ -124,45 +209,32 @@ function processRocketQueue() {
     personImgElement.src = photoUrl;
     personImgElement.alt = `Foto de ${name}`;
 
-    rocketAlertElement.classList.remove('animate'); // Remover a classe para resetar a animação
-    rocketAlertElement.style.transition = 'none'; // Desativar transição para reposicionamento imediato
-    rocketAlertElement.style.transform = 'translate(-10vw, 110vh) rotate(0deg)'; // Posição inicial fora da tela (inferior esquerdo)
-    rocketAlertElement.style.opacity = 0; // Invisível no início
-    rocketAlertElement.classList.remove('hidden'); // Certifica que o elemento não está hidden
-    
-    // Forçar reflow para aplicar os estilos de reset antes de iniciar a animação
+    rocketAlertElement.classList.remove('animate');
+    rocketAlertElement.style.transition = 'none';
+    rocketAlertElement.style.transform = 'translate(-10vw, 110vh) rotate(0deg)';
+    rocketAlertElement.style.opacity = 0;
+    rocketAlertElement.classList.remove('hidden');
+
     void rocketAlertElement.offsetWidth; 
-
-    // Reativar transição e adicionar a classe para iniciar a animação
-    rocketAlertElement.style.transition = 'transform 4s ease-out, opacity 4s ease-out'; // Duração e tipo de transição
-    rocketAlertElement.style.transform = 'translate(0, 0) rotate(0deg)'; // Posição final da animação (onde ele deve "parar" no topo)
-    rocketAlertElement.style.opacity = 1; // Visível durante a animação
-    rocketAlertElement.classList.add('animate'); // Adiciona a classe que contém a keyframe animation
-
-    // A animação keyframe do CSS (definida na classe .animate)
-    // sobrescreve o 'transform' e 'opacity' definidos aqui no JS para a animação.
-    // O que eu fiz acima garante que ele comece do canto inferior esquerdo e se torne visível
-    // ANTES que a keyframe animation do CSS assuma o controle.
-
-    // A animação real deve ser controlada por keyframes no CSS.
-    // O JS apenas dispara o início, reposiciona, e lida com o fim.
+    rocketAlertElement.style.transition = 'transform 4s ease-out, opacity 4s ease-out';
+    rocketAlertElement.style.transform = 'translate(0, 0) rotate(0deg)';
+    rocketAlertElement.style.opacity = 1;
+    rocketAlertElement.classList.add('animate');
 
     rocketAlertElement.addEventListener('animationend', handleRocketAnimationEnd, { once: true });
-    // Adicionamos um fallback caso 'animationend' não dispare por algum motivo inesperado
-    setTimeout(handleRocketAnimationEnd, 4500); // Exemplo: 500ms a mais que a duração da transição, se a animação não for keyframe
+    setTimeout(handleRocketAnimationEnd, 4500);
 }
 
 function handleRocketAnimationEnd() {
     console.log("[ROCKET ALERT] Animação do foguete finalizada.");
-    // Resetar para o estado inicial/oculto
     rocketAlertElement.classList.remove('animate');
-    rocketAlertElement.style.transition = 'none'; // Remover transição para esconder imediatamente
-    rocketAlertElement.style.transform = 'translate(-10vw, 110vh) rotate(0deg)'; // Volta para a posição inicial oculta
-    rocketAlertElement.style.opacity = 0; // Volta a ser invisível
-    rocketAlertElement.classList.add('hidden'); // Esconde o elemento
+    rocketAlertElement.style.transition = 'none';
+    rocketAlertElement.style.transform = 'translate(-10vw, 110vh) rotate(0deg)';
+    rocketAlertElement.style.opacity = 0;
+    rocketAlertElement.classList.add('hidden');
     
     isRocketAnimating = false; 
-    processRocketQueue(); // Tenta processar o próximo da fila
+    processRocketQueue();
 }
 
 async function fetchCsvData(url) {
@@ -192,8 +264,6 @@ function parseCsv(csv) {
 
     let headerLineIndex = -1;
     for (let i = 0; i < rawLines.length; i++) {
-        // Ajuste a verificação para 'Métrica' ou 'Tipo Ranking' se necessário.
-        // Às vezes, há um BOM ou caracteres invisíveis no início.
         if (rawLines[i].startsWith('Métrica') || rawLines[i].startsWith('Tipo Ranking')) {
             headerLineIndex = i;
             break;
@@ -223,11 +293,9 @@ function parseCsv(csv) {
     for (let i = headerLineIndex + 1; i < rawLines.length; i++) {
         const values = rawLines[i].split(',').map(value => value.trim());
 
-        // Preenche com strings vazias se faltarem valores para o cabeçalho
         while (values.length < normalizedHeaders.length) {
             values.push('');
         }
-        // Trunca se houver valores extras
         if (values.length > normalizedHeaders.length) {
             values.splice(normalizedHeaders.length);
         }
@@ -235,9 +303,7 @@ function parseCsv(csv) {
         let row = {};
         for (let j = 0; j < normalizedHeaders.length; j++) {
             row[normalizedHeaders[j]] = values[j];
-        }
-        // Adiciona um log para cada linha parseada para verificar os dados
-        // console.log(`Linha ${i + 1} parseada:`, row); 
+        } 
         result.push(row);
     }
     console.log("Resultado final do parseCsv (array de objetos):", result);
@@ -314,7 +380,7 @@ function startCarousel(data, displayElement, currentIndex, intervalVar, category
         else if (displayElement === paasCarrosselDisplay) paasIndex = currentIndex;
     };
 
-    updateFn(); // Exibe o primeiro item imediatamente
+    updateFn();
     intervalVar = setInterval(updateFn, CARROSSEL_DISPLAY_TIME);
     return intervalVar;
 }
@@ -333,13 +399,13 @@ function updateRanking() {
     const allBDRSDR = rankingData.filter(item => 
         item['Tipo Ranking'] && 
         item['Tipo Ranking'].trim().toUpperCase() === 'TOP 5 BDR & SDR' &&
-        item.Pessoa && item.Pessoa.trim() !== '' // Verifica se a pessoa existe e não é vazia
+        item.Pessoa && item.Pessoa.trim() !== ''
     );
 
     const allCloser = rankingData.filter(item => 
         item['Tipo Ranking'] && 
         item['Tipo Ranking'].trim().toUpperCase() === 'TOP 3' &&
-        item.Pessoa && item.Pessoa.trim() !== '' // Verifica se a pessoa existe e não é vazia
+        item.Pessoa && item.Pessoa.trim() !== ''
     );
 
     console.log("[updateRanking] Dados filtrados para BDR/SDR:", allBDRSDR);
@@ -419,7 +485,13 @@ async function initDashboard() {
     paasData = await fetchCsvData(CSV_URLS.paas);
     rankingData = await fetchCsvData(CSV_URLS.ranking);
 
-    // Reinicia os carrosséis e seus índices a cada atualização
+    const newRankingData = await fetchCsvData(CSV_URLS.ranking);
+
+    updateRankingAndCheckReunioes(newRankingData);
+
+    rankingData = newRankingData;
+    console.log("Ranking Data carregado e processado para alertas:", rankingData.length);
+
     outboundIndex = 0;
     inbound25kIndex = 0;
     inboundsdrIndex = 0;

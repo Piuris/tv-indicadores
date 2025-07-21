@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="style2.css">
+</head>
+<body>
+    <div id="dashboard-container">
+        <h2 id="current-category-title"></h2>
+
+        <div id="metrics-carousel-container">
+            <div id="outbound-metrics-screen" class="category-screen active">
+                <div class="metrics-grid">
+                    </div>
+            </div>
+
+            <div id="paas-metrics-screen" class="category-screen">
+                <div class="metrics-grid">
+                    </div>
+            </div>
+
+            <div id="inbound-25k-metrics-screen" class="category-screen">
+                <div class="metrics-grid">
+                    </div>
+            </div>
+
+            <div id="inbound-sdr-closer-metrics-screen" class="category-screen">
+                <div class="metrics-grid">
+                    </div>
+            </div>
+
+            <div id="ranking-screen" class="category-screen ranking-screen">
+                <div id="ranking-conteudo">
+                    <div class="ranking-grupo">
+                        <h4>TOP 3 BDR</h4>
+                        <ul id="ranking-bdr"></ul>
+                    </div>
+                    <div class="ranking-grupo">
+                        <h4>TOP 3 SDR</h4>
+                        <ul id="ranking-sdr"></ul>
+                    </div>
+                    <div class="ranking-grupo">
+                        <h4>TOP 3 CLOSER</h4>
+                        <ul id="ranking-closer"></ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="alerta-foguete" class="hidden">
+        <img id="foguete-imagem" src="imagens/foguete.png" alt="Foguete">
+        <img id="pessoa-imagem" src="" alt="Foto da Pessoa">
+    </div>
+
+    <div id="alerta-popup" class="alerta-popup hidden">
+    <div class="alerta-conteudo">
+        <img src="" alt="Alerta de Meta Batida" class="alerta-imagem">
+        </div>
+    </div>
+
+    <div id="alerta-pessoa-popup" class="hidden">
+        <div class="fogos-animacao"></div>
+        <div class="alerta-conteudo">
+            <h2 class="alerta-titulo-pessoa">META BATIDA!</h2>
+            <img src="" alt="Foto colaborador" class="alerta-pessoa-imagem">
+            <p class="alerta-pessoa-nome"></p>
+        </div>
+    </div>
+
+    <div id="alerta-reuniao-rolando" class="hidden">
+        <img id="reuniao-pessoa-foto" src="" alt="Foto da pessoa">
+        <p id="reuniao-mensagem">Reunião Agendada!</p>
+    </div>
+
+    <div id="last-update-container">
+        <p id="last-update"></p> 
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+    <script src="script2.js"></script>
+</body>
+</html>

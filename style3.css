@@ -1,0 +1,705 @@
+.swal2-popup {
+    background-color: #9b6afa !important;
+    border-radius: 15px !important;
+    padding: 20px !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4) !important;
+    max-height: 90vh !important;
+    overflow: auto !important;
+}
+
+/* NOVO: Ajuste para o tamanho do popup */
+.custom-swal-popup {
+    width: 80% !important; /* Use porcentagem para ser responsivo, ou px se preferir fixo */
+    max-width: 700px !important; /* Largura máxima para telas grandes */
+    padding: 30px !important; /* Aumenta o padding para dar mais espaço */
+}
+
+/* Opcional: Ajustar o tamanho da imagem dentro do popup se ela for muito grande */
+.swal2-html-container img {
+    max-width: 100%;
+    height: auto;
+    display: block; /* Garante que a imagem se comporta como um bloco para margin: auto */
+    margin: 0 auto; /* Centraliza a imagem */
+}
+
+.ranking-swal-popup {
+    background-color: #6a4a9f !important; /* Cor mais próxima dos cards */
+    color: #f0f0f0 !important;
+    border: 3px solid #ffcc00 !important; /* Borda de destaque */
+    max-width: 400px !important; /* Menor que o alerta de imagem */
+    padding: 20px !important;
+}
+.ranking-swal-title {
+    font-size: 2.5em !important;
+    color: #ffcc00 !important;
+}
+.ranking-swal-html-container {
+    font-size: 1em !important;
+    font-weight: bold;
+    color: #aaffaa !important; /* Cor de sucesso */
+}
+
+/* Estilos para o spinner de carregamento */
+.loading-spinner {
+    border: 5px solid #f3f3f3;
+    border-top: 5px solid #3498db;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: none;
+    z-index: 1000;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Estilos de transição para o dashboard */
+#dashboard-container {
+    transition: opacity 0.5s ease-in-out;
+}
+
+/* ----------------------------------------------------- */
+/* INÍCIO DOS AJUSTES DE RESPONSIVIDADE DO DASHBOARD */
+/* ----------------------------------------------------- */
+
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #ad86fa;
+    color: #f0f0f0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 0;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+#dashboard-container {
+    background-color: #ad86fa;
+    border-radius: 15px;
+    padding: 15px;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.6);
+    width: 99vw;
+    height: 99vh;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    overflow: hidden;
+    padding-bottom: 20px;
+}
+
+#dashboard-title {
+    color: #4a3770;
+    margin: 5px 0;
+    margin-top: 10px;
+    font-size: clamp(1.8rem, 3vw, 2.5rem);
+    text-transform: uppercase;
+    font-weight: bold;
+    letter-spacing: 1px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+    flex-shrink: 0;
+}
+
+#metrics-grid {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    padding: 5px;
+    overflow: hidden;
+    min-height: 0;
+    margin-bottom: 20px;
+}
+
+
+.metric-card {
+    background-color: #6a4a9f;
+    border-radius: 10px;
+    padding: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    overflow: hidden;
+}
+
+.metric-title {
+    font-size: clamp(2rem, 1.5vw, 1.3rem);
+    font-weight: bold;
+    margin-bottom: 8px;
+    color: #f0f0f0;
+    flex-shrink: 0;
+}
+
+.metric-details-container {
+    flex: 1;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.metric-detail {
+    margin-bottom: 5px;
+    font-size: clamp(1.5rem, 1vw, 1rem);
+    display: flex;
+    justify-content: space-between;
+    flex-shrink: 0;
+}
+
+.metric-detail:last-child {
+    border-bottom: none;
+}
+
+.metric-detail span:first-child {
+    font-weight: bold;
+    color: #d0d0d0;
+    margin-right: 5px;
+}
+
+.meta-batida-percent {
+    font-size: clamp(0.9rem, 1.2vw, 1.1rem);
+    font-weight: bold;
+    color: #aaffaa;
+    margin-left: auto;
+    padding: 2px 5px;
+    border-radius: 5px;
+    margin-top: 20px;
+    background-color: rgba(0, 200, 0, 0.644);
+}
+
+/* Ajustes para a tabela de Ranking */
+.metric-card table {
+    width: 100%;
+    font-size: clamp(0.7rem, 0.9vw, 0.9rem);
+    border-collapse: collapse;
+}
+
+.metric-card table th,
+.metric-card table td {
+    padding: 5px;
+    text-align: left;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Loading Spinner */
+.loading-spinner {
+    border: 5px solid #f3f3f3;
+    border-top: 5px solid #3498db;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: none;
+    z-index: 1000;
+}
+
+.metric-card.alert-active {
+    border: 2px solid #4CAF50;
+    box-shadow: 0 0 15px rgba(76, 175, 80, 0.7);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    animation: pulse-green 1.5s infinite alternate; /* Mantenha a animação aqui */
+}
+
+.metric-card.alert-active:hover {
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 0 25px rgba(76, 175, 80, 0.9);
+}
+
+.ranking-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Ajuste o minmax conforme a largura desejada para cada bloco de ranking */
+    gap: 30px; /* Aumentado o gap para mais espaço */
+    padding: 20px;
+    height: 100%;
+    align-items: start; /* Alinha os blocos ao topo */
+    overflow-y: auto; /* Permite rolagem se muitos blocos */
+}
+
+.ranking-block {
+    background-color: #6a4a9f; /* Mesmo fundo dos metric-card */
+    border-radius: 12px;
+    padding: 1.5vw; /* Padding responsivo, ajustado para o ranking */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centraliza o conteúdo do bloco */
+    text-align: center;
+    min-height: 250px; /* Altura mínima para o bloco de ranking */
+    justify-content: space-between; /* Espalha o conteúdo */
+}
+
+.ranking-block-title {
+    font-size: clamp(1.5em, 2.8vw, 2.5em); /* Título do bloco de ranking */
+    font-weight: bold;
+    color: #f0f0f0; /* Cor de destaque */
+    margin-bottom: 1.5vh; /* Espaçamento abaixo do título do bloco */
+    text-transform: uppercase;
+    flex-shrink: 0;
+}
+
+.ranking-list {
+    list-style: none; /* Remove marcadores de lista */
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    flex-grow: 1; /* Permite que a lista ocupe espaço */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around; /* Distribui os itens uniformemente */
+    gap: 1.5vh;
+}
+
+.ranking-item {
+    display: flex;
+    flex-direction: column; /* ESSENCIAL: Empilha os elementos verticalmente */
+    align-items: center;   /* Centraliza os elementos horizontalmente (foto, nome, etc.) */
+    background-color: rgba(0, 0, 0, 0.2); /* Fundo sutil para cada item */
+    border-radius: 8px;
+    padding: 1vh 1vw; /* Padding responsivo para itens da lista */
+    margin-bottom: 0; /* Remove margin-bottom aqui se o gap no .ranking-list for usado */
+    font-size: clamp(1em, 1.5vw, 1.4em); /* Tamanho da fonte dos itens */
+    font-weight: 600;
+    color: #f0f0f0; /* Garante a cor padrão do texto */
+}
+
+.ranking-person-photo {
+    width: 80px; /* Tamanho da foto */
+    height: 80px; /* Tamanho da foto */
+    border-radius: 50%; /* Torna a foto redonda */
+    object-fit: cover; /* Garante que a foto preencha o espaço sem distorcer */
+    border: 3px solid #ffcc00; /* Borda dourada */
+    box-shadow: 0 0 10px rgba(255, 204, 0, 0.5);
+    margin-bottom: 1vh; /* Espaço abaixo da foto, usando vh para responsividade */
+}
+
+.ranking-item:last-child {
+    margin-bottom: 0;
+}
+
+.ranking-position {
+    color: #aaffaa; /* Cor para a posição */
+    font-size: 1.1em; /* Posição um pouco maior */
+    font-weight: bold;
+    margin-bottom: 0.5vh; /* Espaço abaixo da posição */
+    /* Removido 'margin-right' e 'width' pois o layout é vertical */
+    /* Removido 'text-align: left' pois align-items: center no pai já centraliza */
+}
+.ranking-position::after {
+    content: "";
+    margin-left: 0.2em;
+}
+
+
+.ranking-person {
+    /* flex-grow: 1; Removido, pois não é mais um layout horizontal */
+    color: #e0e0e0;
+    text-align: center; /* Centraliza o nome */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-bottom: 0.5vh; /* Espaço abaixo do nome */
+    /* Removido 'margin-right' */
+}
+
+.ranking-percent {
+    color: #00bcd4; /* Cor para percentual */
+    font-weight: bold;
+    /* min-width: 4em; Removido, pois não é mais um layout horizontal */
+    /* text-align: right; Removido, pois align-items: center no pai já centraliza */
+}
+
+@keyframes pulse-green {
+    0% {
+        border-color: #4CAF50;
+        box-shadow: 0 0 10px #4CAF50, 0 4px 15px rgba(0, 0, 0, 0.2);
+    }
+    100% {
+        border-color: #6bcc6b;
+        box-shadow: 0 0 25px #6bcc6b, 0 4px 20px rgba(0, 0, 0, 0.4);
+    }
+}
+
+/* Fim da animação para pulse-green */
+
+/* ----------------------------------------------------- */
+/* MEDIA QUERIES OTIMIZADAS */
+/* ----------------------------------------------------- */
+
+#rocket-alert-container {
+    position: fixed;
+    bottom: -225px; /* Começa abaixo da tela */
+    left: 50%;
+    transform: translateX(-50%); /* Centraliza horizontalmente */
+    width: 225px; /* Largura base do foguete */
+    height: 225px; /* Altura base do foguete */
+    z-index: 9999; /* Acima de tudo, mas abaixo do SweetAlert principal se tiver */
+    opacity: 0; /* Inicia invisível */
+    pointer-events: none; /* Não interfere com cliques */
+    transition: transform 0s, opacity 0s; /* Remove transições iniciais */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+#rocket-alert-container.animate-rocket {
+    animation: flyRocket 3s forwards ease-out, fadeInOut 3s forwards ease-in-out;
+}
+
+#rocket-base {
+    width: 100%;
+    height: 100%;
+    object-fit: contain; /* Garante que a imagem do foguete se ajuste */
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+}
+
+#person-photo {
+    width: 70px; /* Tamanho da foto da pessoa dentro do foguete */
+    height: 70px;
+    border-radius: 50%; /* Torna a foto redonda */
+    object-fit: cover; /* Recorta a imagem para preencher o círculo */
+    position: absolute;
+    /* Ajuste esses valores para posicionar a foto no "vidro" do foguete */
+    top: 15%; /* Porcentagem da altura do foguete */
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2;
+    border: 3px solid #ffcc00; /* Borda dourada para destaque */
+    box-shadow: 0 0 10px rgba(255, 204, 0, 0.5);
+}
+
+#meta-batida-text {
+    position: absolute;
+    bottom: 20%; /* Posição do texto em relação à parte inferior do foguete */
+    left: 50%;
+    transform: translateX(-50%);
+    color: #fff;
+    background-color: rgba(76, 175, 80, 0.8); /* Fundo verde semi-transparente */
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 1.2em; /* Tamanho do texto */
+    font-weight: bold;
+    text-transform: uppercase;
+    white-space: nowrap; /* Garante que o texto não quebre a linha */
+    z-index: 3;
+    opacity: 0; /* Inicia invisível */
+    animation: textFadeIn 0.5s forwards 0.5s; /* Fade in após 0.5s */
+}
+
+@keyframes flyRocket {
+    0% {
+        bottom: -150px;
+        transform: translateX(-50%) rotate(0deg);
+        opacity: 0;
+    }
+    10% {
+        opacity: 1; /* Torna visível no início da subida */
+    }
+    50% {
+        bottom: 50%; /* Sobe até o meio da tela */
+        transform: translateX(-50%) rotate(-5deg); /* Leve inclinação para efeito de voo */
+    }
+    100% {
+        bottom: 120%; /* Sai da tela por cima */
+        transform: translateX(-50%) rotate(5deg);
+        opacity: 0; /* Desaparece no final */
+    }
+}
+
+@keyframes fadeInOut {
+    0% { opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { opacity: 0; }
+}
+
+@keyframes textFadeIn {
+    from { opacity: 0; transform: translateX(-50%) translateY(20px); }
+    to { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+@media (max-width: 1400px) { 
+    #dashboard-title {
+        font-size: clamp(2.3em, 4.5vw, 4em);
+    }
+    #metrics-grid {
+        gap: 1.5vw;
+    }
+    .metric-card {
+        padding: 1.2vw;
+    }
+    .metric-title {
+        font-size: clamp(1.1em, 2.3vw, 1.8em);
+    }
+    .metric-detail {
+        font-size: clamp(0.85em, 1.1vw, 1.1em);
+    }
+    .metric-detail span:first-child {
+        min-width: 70px;
+    }
+    .meta-batida-percent {
+        font-size: clamp(0.9em, 1.3vw, 1.3em);
+    }
+    /* Ranking adjustments */
+    .ranking-block {
+        padding: 1.2vw;
+    }
+    .ranking-block-title {
+        font-size: clamp(1.3em, 2.5vw, 2.2em);
+    }
+    .ranking-item {
+        padding: 0.8vh 0.8vw;
+        font-size: clamp(0.9em, 1.3vw, 1.2em);
+    }
+    /* Rocket adjustments */
+    #rocket-alert-container {
+        width: 120px;
+        height: 120px;
+    }
+    #person-photo {
+        width: 60px;
+        height: 60px;
+    }
+    #meta-batida-text {
+        font-size: 1em;
+    }
+}
+
+@media (max-width: 1200px) {
+    #dashboard-title {
+        font-size: clamp(2em, 4vw, 3.5em);
+    }
+    #metrics-grid {
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
+        gap: 2vw;
+    }
+    /* Ranking adjustments */
+    #metrics-grid.ranking-grid {
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
+        gap: 2.5vw;
+    }
+    .metric-card {
+        padding: 1vw;
+    }
+    .metric-title {
+        font-size: clamp(1em, 2vw, 1.7em);
+    }
+    .metric-detail {
+        font-size: clamp(0.8em, 1vw, 1em);
+    }
+    .metric-detail span:first-child {
+        min-width: 60px;
+    }
+    .meta-batida-percent {
+        font-size: clamp(0.8em, 1.2vw, 1.2em);
+    }
+    .ranking-block {
+        padding: 1vw;
+    }
+    .ranking-block-title {
+        font-size: clamp(1.2em, 2.2vw, 2em);
+    }
+    .ranking-item {
+        padding: 0.7vh 0.7vw;
+        font-size: clamp(0.8em, 1.2vw, 1.1em);
+    }
+    /* Rocket adjustments */
+    #rocket-alert-container {
+        width: 100px;
+        height: 100px;
+    }
+    #person-photo {
+        width: 50px;
+        height: 50px;
+    }
+    #meta-batida-text {
+        font-size: 0.9em;
+    }
+}
+
+@media (max-width: 992px) {
+    #dashboard-container {
+        padding: 1.5vw;
+    }
+    #dashboard-title {
+        font-size: clamp(1.8em, 3.5vw, 3em);
+        margin-bottom: 1vh;
+    }
+    #metrics-grid {
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
+        gap: 1.5vw;
+    }
+    /* Ranking adjustments */
+    #metrics-grid.ranking-grid {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); 
+        gap: 2vw;
+    }
+    .metric-card {
+        padding: 1.5vh;
+    }
+    .metric-title {
+        font-size: clamp(0.9em, 1.8vw, 1.6em);
+    }
+    .metric-detail {
+        font-size: clamp(0.75em, 0.9vw, 0.9em);
+    }
+    .metric-detail span:first-child {
+        min-width: 50px;
+    }
+    .meta-batida-percent {
+        font-size: clamp(0.75em, 1vw, 1em);
+    }
+    .ranking-block {
+        padding: 1.5vh;
+    }
+    .ranking-block-title {
+        font-size: clamp(1em, 2vw, 1.8em);
+    }
+    .ranking-item {
+        padding: 0.6vh 0.6vw;
+        font-size: clamp(0.75em, 1.1vw, 1em);
+    }
+    /* Rocket adjustments */
+    #rocket-alert-container {
+        width: 80px;
+        height: 80px;
+    }
+    #person-photo {
+        width: 40px;
+        height: 40px;
+    }
+    #meta-batida-text {
+        font-size: 0.8em;
+        bottom: 15%; /* Ajusta a posição do texto */
+    }
+}
+
+@media (max-width: 768px) {
+    body {
+        padding: 0.5vh;
+    }
+    #dashboard-container {
+        padding: 1vw;
+    }
+    #dashboard-title {
+        font-size: clamp(1.5em, 3vw, 2.5em);
+        margin-bottom: 0.8vh;
+    }
+    #metrics-grid {
+        grid-template-columns: 1fr;
+        gap: 1vh;
+    }
+    /* Ranking adjustments */
+    #metrics-grid.ranking-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5vh;
+    }
+    .metric-card {
+        padding: 1vh;
+    }
+    .metric-title {
+        font-size: clamp(0.8em, 1.5vw, 1.4em);
+        margin-bottom: 0.5vh;
+    }
+    .metric-detail {
+        font-size: clamp(0.7em, 0.8vw, 0.85em);
+        margin-bottom: 0.4vh;
+    }
+    .metric-detail span:first-child {
+        min-width: 40px;
+    }
+    .meta-batida-percent {
+        font-size: clamp(0.7em, 0.9vw, 0.9em);
+        margin-top: 0.5vh;
+    }
+    .ranking-block {
+        padding: 1vh;
+    }
+    .ranking-block-title {
+        font-size: clamp(0.9em, 1.8vw, 1.6em);
+    }
+    .ranking-item {
+        padding: 0.5vh 0.5vw;
+        font-size: clamp(0.7em, 1vw, 0.9em);
+    }
+    /* Rocket adjustments */
+    #rocket-alert-container {
+        width: 70px;
+        height: 70px;
+    }
+    #person-photo {
+        width: 35px;
+        height: 35px;
+        top: 10%; /* Ajusta a posição da foto */
+    }
+    #meta-batida-text {
+        font-size: 0.7em;
+        bottom: 10%; /* Ajusta a posição do texto */
+    }
+}
+
+@media (max-width: 480px) {
+    #dashboard-title {
+        font-size: clamp(1.2em, 2.5vw, 2em);
+    }
+    .metric-card {
+        padding: 0.8vh;
+    }
+    .metric-title {
+        font-size: clamp(0.7em, 1.3vw, 1.2em);
+    }
+    .metric-detail {
+        font-size: clamp(0.65em, 0.7vw, 0.75em);
+    }
+    .ranking-block-title {
+        font-size: clamp(0.8em, 1.5vw, 1.4em);
+    }
+    .ranking-item {
+        font-size: clamp(0.65em, 0.9vw, 0.8em);
+    }
+    /* Rocket adjustments */
+    #rocket-alert-container {
+        width: 60px;
+        height: 60px;
+    }
+    #person-photo {
+        width: 30px;
+        height: 30px;
+        top: 8%;
+    }
+    #meta-batida-text {
+        font-size: 0.6em;
+        padding: 3px 6px;
+        bottom: 8%;
+    }
+}
+/* FIM DOS AJUSTES DE RESPONSIVIDADE DO DASHBOARD */
+/* ----------------------------------------------------- */
+
+footer {
+    background-color: #4a3770;
+    padding: 1.5vh; /* Ajustado para vh */
+    text-align: center;
+    font-size: clamp(0.8em, 1vw, 1.1em); /* Fonte responsiva */
+    color: #ccc;
+    margin-top: auto; /* Empurra o footer para o final se houver espaço */
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2);
+    flex-shrink: 0; /* Garante que o footer não encolha */
+}
